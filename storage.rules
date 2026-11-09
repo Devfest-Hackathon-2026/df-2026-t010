@@ -1,0 +1,64 @@
+rules_version = '2';
+// Prototype: only the owner can upload/get immutable material/completion photos.
+// Every create needs an immutable server reservation counted against photo quotas.
+service firebase.storage {
+  match /b/{bucket}/o {
+    function canAccessCraftPath(craftId) {
+      return request.auth != null && craftId.matches('[A-Za-z0-9_-]{1,128}');
+    }
+    function craftData(craftId) {
+      return firestore.get(/databases/(default)/documents/crafts/$(craftId)).data;
+    }
+    function ownsCraft(craft) {
+      return craft is map && craft.schemaVersion == 2 && craft.ownerUid == request.auth.uid;
+    }
+    function canReadPhoto(craftId, filename) {
+      return canAccessCraftPath(craftId) && filename.matches('[A-Za-z0-9_-]{1,128}\\.(jpg|jpeg|png|webp)')
+        && ownsCraft(craftData(craftId));
+    }
+    function canCreatePhoto(craftId, kind, filename, allowedStates) {
+      // Read the craft once and the permit once, within the two-call limit.
+      let craft = craftData(craftId);
+      return ownsCraft(craft) && craft.status in allowedStates && reserved(craftId, kind, filename);
+    }
+    function validPhotoMetadata() {
+      // The Web SDK omits this field when no custom metadata is supplied.
+      return !('metadata' in request.resource) || request.resource.metadata == null
+        || (request.resource.metadata is map
+          && request.resource.metadata.keys().hasOnly(['firebaseStorageDownloadTokens'])
+          && (!('firebaseStorageDownloadTokens' in request.resource.metadata)
+            || (request.resource.metadata.firebaseStorageDownloadTokens is string
+              && request.resource.metadata.firebaseStorageDownloadTokens.size() <= 128)));
+    }
+    function validPhoto(filename) {
+      return request.resource.size > 0 && request.resource.size <= 5 * 1024 * 1024
+        && ((filename.matches('[A-Za-z0-9_-]{1,128}\\.(jpg|jpeg)') && request.resource.contentType == 'image/jpeg')
+          || (filename.matches('[A-Za-z0-9_-]{1,128}\\.png') && request.resource.contentType == 'image/png')
+          || (filename.matches('[A-Za-z0-9_-]{1,128}\\.webp') && request.resource.contentType == 'image/webp'))
+        && validPhotoMetadata();
+    }
+    function reserved(craftId, kind, filename) {
+      let permit = firestore.get(/databases/(default)/documents/crafts/$(craftId)/photoUploads/$(kind + '-' + filename)).data;
+      // Functions verify completion readiness before granting the reservation.
+      return permit is map && permit.schemaVersion == 2 && permit.ownerUid == request.auth.uid
+        && permit.craftId == craftId && permit.kind == kind
+        && permit.path == 'crafts/' + craftId + '/' + kind + '/' + filename
+        && permit.createdAt is timestamp && permit.sizeBytes is int
+        && permit.sizeBytes == request.resource.size
+        && permit.contentType == request.resource.contentType;
+    }
+    match /crafts/{craftId}/materials/{filename} {
+      allow get: if canReadPhoto(craftId, filename);
+      allow create: if resource == null && canAccessCraftPath(craftId) && validPhoto(filename)
+        && canCreatePhoto(craftId, 'materials', filename, ['materials', 'project_selection']);
+      allow update, delete, list: if false;
+    }
+    match /crafts/{craftId}/completion/{filename} {
+      allow get: if canReadPhoto(craftId, filename);
+      allow create: if resource == null && canAccessCraftPath(craftId) && validPhoto(filename)
+        && canCreatePhoto(craftId, 'completion', filename, ['crafting']);
+      allow update, delete, list: if false;
+    }
+    match /{path=**} { allow read, write: if false; }
+  }
+}

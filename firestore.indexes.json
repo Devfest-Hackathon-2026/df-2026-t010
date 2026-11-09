@@ -1,0 +1,36 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "crafts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "completedAt", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "crafts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "updatedAt", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "galleryPosts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "bookmarkedBy", "arrayConfig": "CONTAINS" },
+        { "fieldPath": "deleteAfter", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": [
+    { "collectionGroup": "workshop", "fieldPath": "items", "indexes": [] },
+    { "collectionGroup": "workshop", "fieldPath": "candidates", "indexes": [] },
+    { "collectionGroup": "workshop", "fieldPath": "template", "indexes": [] },
+    { "collectionGroup": "workshop", "fieldPath": "steps", "indexes": [] },
+    { "collectionGroup": "recognitionRequests", "fieldPath": "base", "indexes": [] },
+    { "collectionGroup": "recognitionRequests", "fieldPath": "response", "indexes": [] }
+  ]
+}

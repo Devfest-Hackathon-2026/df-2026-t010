@@ -1,0 +1,29 @@
+rules_version = '2';
+// Prototype for review. Firestore Standard Edition (default).
+// crafts/{craftId}: schemaVersion=2; ownerUid:string (immutable), locale:ja|en,
+// status:materials|project_selection|crafting|completed; revision:int>=0,
+// selectedTemplateId:string|null; createdAt/updatedAt:Timestamp; completedAt:Timestamp|null.
+// crafts/{craftId}/workshop/{materials|candidates|production|completion}: strict v2 shared schemas.
+// All writes use Functions: Admin SDK + strict Zod + ownership/state/transaction checks.
+// Client create/update/delete, list queries, operation metadata and all legacy paths are denied.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuthenticated() { return request.auth != null; }
+    function isCraftOwner(craftId) {
+      let path = /databases/$(database)/documents/crafts/$(craftId);
+      return isAuthenticated() && exists(path)
+        && get(path).data.schemaVersion == 2
+        && get(path).data.ownerUid == request.auth.uid;
+    }
+    match /crafts/{craftId} {
+      allow get: if isAuthenticated() && resource.data.schemaVersion == 2 && resource.data.ownerUid == request.auth.uid;
+      // No client write is allowed: ownership and data validators live in Functions.
+      allow list, create, update, delete: if false;
+      match /workshop/{documentId} {
+        allow get: if documentId in ['materials', 'candidates', 'production', 'completion'] && isCraftOwner(craftId);
+        allow list, create, update, delete: if false;
+      }
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}
