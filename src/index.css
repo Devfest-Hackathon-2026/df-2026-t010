@@ -1,0 +1,55 @@
+@import 'tailwindcss';
+:root {
+  font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 100%; line-height: 1.7; color: #202124; background: #f2f6fc;
+  font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased;
+  --ink: #202124; --muted: #687386; --accent: #1a73e8; --line: #e6ebf4; --danger: #b3261e; --target: 48px;
+  --red: #ea4335; --yellow: #fbbc04; --green: #34a853; --surface: #f5f9ff;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+button, input, select, textarea { font: inherit; }
+button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+button, select, summary { cursor: pointer; }
+input, select, textarea { color: var(--ink); }
+a { color: inherit; text-underline-offset: 4px; }
+button:focus, a:focus, input:focus, select:focus, textarea:focus, summary:focus { outline: none; }
+button:focus-visible, a:any-link:focus-visible, summary:focus-visible { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+input:focus-visible, textarea:focus-visible { box-shadow: inset 0 -2px 0 var(--accent); }
+.app-shell select:focus-visible { box-shadow: none; font-weight: 850; }
+.button:focus-visible, .icon-button:focus-visible, .shutter-button:focus-visible, .reaction-button:focus-visible, .start-option:focus-visible, summary:focus-visible { box-shadow: inset 0 -3px 0 var(--accent); }
+main:focus { outline: none; }
+h1, h2, p { margin: 0; text-align: left; }
+h1 { font-size: clamp(1.5rem, 6vw, 1.8rem); font-weight: 800; line-height: 1.5; letter-spacing: -.035em; overflow-wrap: anywhere; }
+h2 { font-size: 1.05rem; font-weight: 750; line-height: 1.6; }
+svg { flex-shrink: 0; }
+.muted { color: var(--muted); }
+.small { font-size: .8125rem; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-width: var(--target); min-height: 54px; padding: 12px 20px; border: 1.5px solid transparent; border-radius: 16px; font-weight: 750; line-height: 1.5; text-decoration: none; touch-action: manipulation; transition: background-color 150ms ease, transform 150ms ease; }
+.button--primary { color: white; background: var(--accent); box-shadow: 0 4px 12px #1a73e81a; }
+.button--primary:hover:not(:disabled) { background: #0b5fd0; }
+.button--secondary { background: white; border-color: #d6e4fc; color: var(--accent); }
+.button--secondary:hover:not(:disabled) { background: #edf4ff; }
+.button--quiet { background: transparent; color: var(--accent); }
+.button:disabled { background: #edf0f5; color: #7d8696; border-color: #e2e7f0; box-shadow: none; cursor: not-allowed; }
+.button:active:not(:disabled) { transform: translateY(1px); }
+.wide { width: 100%; }
+.text-link, .back-link { display: inline-flex; align-items: center; gap: 8px; min-height: var(--target); min-width: var(--target); color: var(--accent); }
+.stack { display: flex; flex-direction: column; align-items: stretch; gap: 20px; }
+.actions { display: flex; flex-direction: column; gap: 12px; }
+.field { display: flex; flex-direction: column; align-items: stretch; gap: 8px; }
+.field label { font-size: .875rem; font-weight: 650; text-align: left; }
+.field input, .field textarea, .comment-input-row input { width: 100%; min-width: 0; min-height: 52px; padding: 12px 14px; border: 1px solid #d4ddeb; border-radius: 12px; background: #fff; text-align: left; font-size: 1rem; }
+.field textarea { min-height: 120px; resize: vertical; }
+.field input[aria-invalid='true'] { border-color: var(--danger); }
+.field input:disabled { background: #f0f3f8; }
+.field-error { color: var(--danger); font-size: .875rem; }
+.feedback { display: flex; align-items: flex-start; gap: 10px; padding: 16px; margin-block: 16px; background: #f3f7fd; border: 1px solid var(--line); border-radius: 14px; overflow-wrap: anywhere; }
+.feedback > svg { margin-top: 3px; }
+.feedback--error { color: var(--danger); background: #fff6f4; border-color: #f9ddd7; }
+.feedback .button { margin-top: 12px; }
+.loading { padding-block: 48px; }
+.icon-button { display: inline-flex; align-items: center; justify-content: center; min-width: 48px; min-height: 48px; border: 0; background: #f2f6fc; border-radius: 50%; text-decoration: none; color: #374151; }
+.icon-button:disabled { color: #b6bfce; cursor: default; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }

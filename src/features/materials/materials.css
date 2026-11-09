@@ -1,0 +1,70 @@
+/* 材料写真（#9）・材料の確認/確定（#11）。共通化が必要になったら index.css へ移す。 */
+.photo-actions { display: flex; flex-direction: column; gap: 12px; }
+.photo-preview { display: block; width: 100%; max-height: 60vh; object-fit: contain; border: 1px solid var(--line); border-radius: 10px; background: #f0f1eb; }
+.material-results { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--line); }
+.material-candidates { list-style: none; margin: 12px 0 0; padding: 0; }
+.material-candidates li { display: grid; grid-template-columns: minmax(0, 1fr) 6rem; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); text-align: left; overflow-wrap: anywhere; }
+.material-candidates li:last-child { border-bottom: 0; }
+.result-actions { margin-top: 24px; }
+
+.material-photo { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--line); }
+.material-photo .lead { margin-top: 8px; }
+.result-add { margin-top: 16px; }
+.material-section { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line); }
+.material-section h2 { display: flex; align-items: baseline; gap: 8px; }
+.material-subheading { margin-top: 24px; }
+.material-empty { margin-top: 16px; }
+.material-list { list-style: none; margin: 12px 0 0; padding: 0; }
+.material-list > li { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 8px; padding-block: 12px; border-bottom: 1px solid var(--line); }
+.material-main { flex: 1 1 12rem; min-width: 0; display: flex; flex-direction: column; gap: 2px; padding-top: 4px; overflow-wrap: anywhere; }
+.material-amount { font-variant-numeric: tabular-nums; }
+.material-actions { display: flex; gap: 8px; }
+.material-actions .button { min-width: 48px; min-height: 48px; padding: 12px; }
+.material-form { flex: 1 1 100%; padding-block: 8px; }
+.material-form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(8rem, 100%), 1fr)); gap: 16px; align-items: start; }
+.material-add { margin-top: 16px; width: 100%; }
+.tool-list { list-style: none; margin: 12px 0 0; padding: 0; }
+.tool-option { display: flex; align-items: center; gap: 12px; min-height: 48px; padding-block: 4px; overflow-wrap: anywhere; cursor: pointer; }
+.tool-option input { width: 24px; height: 24px; margin: 0; flex: none; accent-color: var(--accent); }
+.tool-add { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+.material-confirm .button { margin-top: 16px; width: 100%; }
+.material-reopen-note { margin-top: 20px; }
+.material-confirm .waiting-note { margin-top: 8px; }
+.material-section > .button { margin-top: 12px; width: 100%; }
+/* Photo → inventory uses the same editor and upload pipeline. */
+.material-journey .tool-list { margin-top: 24px; border: 1px solid #e5ecf8; border-radius: 16px; overflow: hidden; padding: 0 14px; }
+.material-journey .tool-list li + li { border-top: 1px solid #edf1f8; }
+.material-journey .tool-option { min-height: 60px; gap: 16px; font-size: .9375rem; font-weight: 650; }
+.material-journey .tool-option input { border-radius: 5px; width: 22px; height: 22px; }
+.material-journey .tool-add { margin-top: 20px; }
+.material-journey .material-photo { margin-top: 0; padding-top: 0; border: 0; }
+.material-journey .photo-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.material-journey .photo-actions .button { flex-direction: column; min-height: 90px; padding: 12px 6px; font-size: .8125rem; background: #edf4ff; color: var(--accent); border-color: #e2ebfc; }
+.material-journey .photo-actions .button svg { width: 30px; height: 30px; }
+.camera-placeholder { display: grid; place-items: center; height: 260px; position: relative; background: linear-gradient(135deg, #ffeac9, #ffdca9); color: #c09054; border-radius: 18px; }
+.manual-entry { margin-top: 24px; }
+.materials-review > .lead { margin-top: 0; }
+.materials-review .material-section { margin-top: 22px; padding-top: 20px; }
+.materials-review .material-section:first-of-type { margin-top: 20px; padding-top: 0; border: 0; }
+.materials-review .material-list > li { background: #f6f9ff; margin-top: 10px; border: 1px solid #e8eef9; border-radius: 14px; padding: 12px; gap: 4px; }
+.materials-review .material-main { flex-basis: 9rem; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; column-gap: 10px; }
+.materials-review .material-name { font-size: .875rem; font-weight: 750; }
+.materials-review .material-amount { font-size: .8125rem; color: var(--ink); font-weight: 700; }
+.materials-review .material-actions { width: 100%; justify-content: flex-end; }
+.materials-review .material-actions .button { padding: 8px; }
+.materials-review .tool-list { border: 0; padding: 0; }
+.materials-review .tool-option { min-height: 48px; font-size: .8125rem; }
+.materials-review .material-confirm h2 { display: none; }
+.materials-review .material-confirm { margin-top: 24px; padding-block: 16px; }
+.materials-review .material-confirm p { font-size: .8125rem; }
+.tool-more { margin-top: 18px; }
+.tool-icon--0 { color: #ea4335; }
+.tool-icon--1 { color: #e5a71b; }
+.tool-icon--2 { color: #1a73e8; }
+.tool-icon--3 { color: #34a853; }
+
+@media (max-width: 240px) {
+  .material-journey .photo-actions { grid-template-columns: 1fr; }
+  .material-journey .tool-option { gap: 8px; }
+  .material-candidates li { grid-template-columns: minmax(0, 1fr) auto; }
+}

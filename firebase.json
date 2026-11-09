@@ -1,0 +1,35 @@
+{
+  "firestore": {
+    "database": "(default)",
+    "location": "asia-northeast1",
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "functions": [{
+    "source": "functions",
+    "codebase": "co-make",
+    "runtime": "nodejs22",
+    "ignore": ["node_modules", ".git", "src", "**/*.log", ".env*", "**/*.local", ".secret.*"],
+    "predeploy": ["npm --prefix \"$PROJECT_DIR\" run build:functions"]
+  }],
+  "storage": { "rules": "storage.rules" },
+  "hosting": {
+    "public": "dist",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [{ "source": "**", "destination": "/index.html" }]
+  },
+  "emulators": {
+    "auth": { "host": "127.0.0.1", "port": 9098 },
+    "firestore": { "host": "127.0.0.1", "port": 8085 },
+    "functions": { "host": "127.0.0.1", "port": 5002 },
+    "storage": { "host": "127.0.0.1", "port": 9198 },
+    "hosting": { "host": "127.0.0.1", "port": 5005 },
+    "ui": { "enabled": true, "host": "127.0.0.1", "port": 4002 },
+    "singleProjectMode": true
+  },
+  "auth": {
+    "providers": {
+      "anonymous": true
+    }
+  }
+}
